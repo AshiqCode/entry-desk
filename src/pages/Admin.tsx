@@ -83,7 +83,7 @@ const Admin = () => {
 
   const formatTimestamp = (timestamp: any) => {
     if (!timestamp) return 'N/A';
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    const date = typeof timestamp === 'number' ? new Date(timestamp) : new Date(timestamp);
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
       day: 'numeric',

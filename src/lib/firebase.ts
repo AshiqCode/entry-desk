@@ -1,17 +1,14 @@
 import { initializeApp } from 'firebase/app';
 import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  doc, 
-  onSnapshot, 
-  query, 
-  orderBy,
-  serverTimestamp,
-  Timestamp
-} from 'firebase/firestore';
+  getDatabase, 
+  ref, 
+  push, 
+  set, 
+  update, 
+  remove, 
+  onValue,
+  serverTimestamp as rtdbServerTimestamp
+} from 'firebase/database';
 
 // Firebase configuration
 // NOTE: These should be stored as environment variables in production
@@ -27,7 +24,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+export const db = getDatabase(app);
 
 // Types
 export interface ClassEntry {
@@ -35,24 +32,30 @@ export interface ClassEntry {
   date: string;
   name: string;
   keyPoints: string[];
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
+  createdAt?: number;
+  updatedAt?: number;
 }
 
-// Firestore helpers
-const classesCollection = collection(db, 'classes');
+// Realtime Database helpers
+const classesRef = ref(db, 'classes');
 
 export const subscribeToClasses = (callback: (classes: ClassEntry[]) => void) => {
-  const q = query(classesCollection, orderBy('createdAt', 'desc'));
-  
-  return onSnapshot(q, (snapshot) => {
+  return onValue(classesRef, (snapshot) => {
     const classes: ClassEntry[] = [];
-    snapshot.forEach((doc) => {
-      classes.push({
-        id: doc.id,
-        ...doc.data()
-      } as ClassEntry);
-    });
+    const data = snapshot.val();
+    
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        classes.push({
+          id: key,
+          ...data[key]
+        } as ClassEntry);
+      });
+      
+      // Sort by createdAt descending
+      classes.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    }
+    
     callback(classes);
   }, (error) => {
     console.error('Error fetching classes:', error);
@@ -61,12 +64,13 @@ export const subscribeToClasses = (callback: (classes: ClassEntry[]) => void) =>
 
 export const addClass = async (classData: Omit<ClassEntry, 'id' | 'createdAt' | 'updatedAt'>) => {
   try {
-    const docRef = await addDoc(classesCollection, {
+    const newClassRef = push(classesRef);
+    await set(newClassRef, {
       ...classData,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+      createdAt: Date.now(),
+      updatedAt: Date.now()
     });
-    return { id: docRef.id, error: null };
+    return { id: newClassRef.key, error: null };
   } catch (error: any) {
     return { id: null, error: error.message };
   }
@@ -74,10 +78,10 @@ export const addClass = async (classData: Omit<ClassEntry, 'id' | 'createdAt' | 
 
 export const updateClass = async (id: string, classData: Partial<ClassEntry>) => {
   try {
-    const classRef = doc(db, 'classes', id);
-    await updateDoc(classRef, {
+    const classRef = ref(db, `classes/${id}`);
+    await update(classRef, {
       ...classData,
-      updatedAt: serverTimestamp()
+      updatedAt: Date.now()
     });
     return { error: null };
   } catch (error: any) {
@@ -87,8 +91,8 @@ export const updateClass = async (id: string, classData: Partial<ClassEntry>) =>
 
 export const deleteClass = async (id: string) => {
   try {
-    const classRef = doc(db, 'classes', id);
-    await deleteDoc(classRef);
+    const classRef = ref(db, `classes/${id}`);
+    await remove(classRef);
     return { error: null };
   } catch (error: any) {
     return { error: error.message };
