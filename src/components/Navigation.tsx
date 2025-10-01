@@ -1,22 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, Lock, LogOut } from 'lucide-react';
+import { BookOpen, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/AuthContext';
-import { logoutUser } from '@/lib/firebase';
-import { toast } from 'sonner';
 
 const Navigation = () => {
   const location = useLocation();
-  const { user } = useAuth();
-
-  const handleLogout = async () => {
-    const { error } = await logoutUser();
-    if (error) {
-      toast.error('Logout failed', { description: error });
-    } else {
-      toast.success('Logged out successfully');
-    }
-  };
 
   return (
     <nav className="sticky top-0 z-50 bg-card border-b border-border shadow-sm backdrop-blur-sm bg-card/95">
@@ -32,36 +19,16 @@ const Navigation = () => {
           </Link>
 
           <div className="flex items-center gap-3">
-            {user ? (
-              <>
-                <Link to="/admin">
-                  <Button 
-                    variant={location.pathname === '/admin' ? 'default' : 'outline'}
-                    size="sm"
-                    className="gap-2"
-                  >
-                    <Lock className="h-4 w-4" />
-                    Admin
-                  </Button>
-                </Link>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={handleLogout}
-                  className="gap-2"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </Button>
-              </>
-            ) : (
-              <Link to="/login">
-                <Button variant="default" size="sm" className="gap-2">
-                  <Lock className="h-4 w-4" />
-                  Admin Login
-                </Button>
-              </Link>
-            )}
+            <Link to="/admin">
+              <Button 
+                variant={location.pathname === '/admin' ? 'default' : 'outline'}
+                size="sm"
+                className="gap-2"
+              >
+                <Settings className="h-4 w-4" />
+                Manage Classes
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

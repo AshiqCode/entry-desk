@@ -1,5 +1,4 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
 import { 
   getFirestore, 
   collection, 
@@ -28,7 +27,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 // Types
@@ -40,29 +38,6 @@ export interface ClassEntry {
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
-
-// Authentication helpers
-export const loginUser = async (email: string, password: string) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return { user: userCredential.user, error: null };
-  } catch (error: any) {
-    return { user: null, error: error.message };
-  }
-};
-
-export const logoutUser = async () => {
-  try {
-    await signOut(auth);
-    return { error: null };
-  } catch (error: any) {
-    return { error: error.message };
-  }
-};
-
-export const onAuthChange = (callback: (user: User | null) => void) => {
-  return onAuthStateChanged(auth, callback);
-};
 
 // Firestore helpers
 const classesCollection = collection(db, 'classes');

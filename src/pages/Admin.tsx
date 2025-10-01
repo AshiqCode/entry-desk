@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Plus, Edit, Trash2, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +15,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import ClassForm from '@/components/ClassForm';
 import Navigation from '@/components/Navigation';
-import { useAuth } from '@/contexts/AuthContext';
 import { ClassEntry, subscribeToClasses, addClass, updateClass, deleteClass } from '@/lib/firebase';
 import { toast } from 'sonner';
 
@@ -25,23 +23,15 @@ const Admin = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingClass, setEditingClass] = useState<ClassEntry | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const { user, loading } = useAuth();
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login');
-    }
-  }, [user, loading, navigate]);
-
-  useEffect(() => {
-    if (user) {
-      const unsubscribe = subscribeToClasses((classesData) => {
-        setClasses(classesData);
-      });
-      return () => unsubscribe();
-    }
-  }, [user]);
+    const unsubscribe = subscribeToClasses((classesData) => {
+      setClasses(classesData);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleAddClass = async (data: Omit<ClassEntry, 'id' | 'createdAt' | 'updatedAt'>) => {
     const { error } = await addClass(data);
@@ -111,10 +101,6 @@ const Admin = () => {
         </div>
       </div>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   return (
