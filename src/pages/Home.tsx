@@ -107,7 +107,9 @@ const Home = () => {
       </main>
       <footer className="mt-16 py-8 border-t border-border bg-muted/30">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>ClassTrack © {new Date().getFullYear()} - Manage your classroom entries efficiently</p>
+          <p>Class Work © {new Date().getFullYear()} - Manage your classroom entries efficiently.</p>
+      <p>In case of misuse, I am not responsible.</p>
+      <p>Regards, Muhammad Ashiq</p>
         </div>
       </footer>
     </div>
