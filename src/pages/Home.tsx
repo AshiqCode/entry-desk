@@ -105,7 +105,6 @@ const Home = () => {
 
         <Contactus />
       </main>
-
       <footer className="mt-16 py-8 border-t border-border bg-muted/30">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p>ClassTrack © {new Date().getFullYear()} - Manage your classroom entries efficiently</p>
