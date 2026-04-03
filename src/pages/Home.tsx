@@ -3,7 +3,9 @@ import { GraduationCap } from 'lucide-react';
 import ClassCard from '@/components/ClassCard';
 import SearchFilters from '@/components/SearchFilters';
 import Navigation from '@/components/Navigation';
+import { MdEmail, MdMail } from "react-icons/md";
 import { ClassEntry, subscribeToClasses } from '@/lib/firebase';
+import Contactus from '..//pages/ContactUs'
 
 const Home = () => {
   const [classes, setClasses] = useState<ClassEntry[]>([]);
@@ -90,7 +92,17 @@ const Home = () => {
               <ClassCard key={classEntry.id} classEntry={classEntry} />
             ))}
           </div>
+
         )}
+        <div className="text-center animate-fade-in">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-primary rounded-2xl shadow-hover ">
+            <MdMail className="h-8 w-8 text-primary-foreground" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            Contact Me
+          </h1>
+        </div>
+        <Contactus />
       </main>
 
       <footer className="mt-16 py-8 border-t border-border bg-muted/30">
