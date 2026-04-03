@@ -18,7 +18,7 @@ const Navigation = () => {
             </span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <Link to="/admin">
               <Button 
                 variant={location.pathname === '/admin' ? 'default' : 'outline'}
@@ -29,7 +29,7 @@ const Navigation = () => {
                 Manage Classes
               </Button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>
