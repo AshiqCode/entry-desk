@@ -59,7 +59,7 @@ const Home = () => {
             <GraduationCap className="h-8 w-8 text-primary-foreground" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent">
-            Classroom 
+            Class Work 
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Track and manage all your classroom sessions, key learnings, and educational progress
