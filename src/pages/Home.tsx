@@ -94,7 +94,7 @@ const Home = () => {
           </div>
 
         )}
-        <div className="text-center animate-fade-in">
+        <div className="text-center mt-7 animate-fade-in">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-primary rounded-2xl shadow-hover ">
             <MdMail className="h-8 w-8 text-primary-foreground" />
           </div>
@@ -102,6 +102,7 @@ const Home = () => {
             Contact Me
           </h1>
         </div>
+
         <Contactus />
       </main>
 
