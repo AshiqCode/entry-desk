@@ -16,7 +16,7 @@ const Home = () => {
 
   // 🔒 Auth states
   const [inputPassword, setInputPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');
 
   const handlePasswordSubmit = () => {
