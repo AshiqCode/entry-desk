@@ -186,7 +186,7 @@ const Home = () => {
       </main>
 
       <footer className="mt-16 py-8 border-t bg-muted/30 text-center text-sm text-muted-foreground">
-        ClassTrack © {new Date().getFullYear()}
+         This website is for informational purposes only. Any misuse of this platform is not my responsibility. Regards, Muhammad Ashiq
       </footer>
     </div>
   );
