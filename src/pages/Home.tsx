@@ -20,7 +20,7 @@ const Home = () => {
   const [error, setError] = useState('');
 
   const handlePasswordSubmit = () => {
-    if (inputPassword === 'abc3x') {
+    if (inputPassword === 'code6') {
       setError('');
       setIsAuthenticated(true);
     } else {
